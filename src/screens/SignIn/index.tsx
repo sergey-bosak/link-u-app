@@ -31,9 +31,14 @@ const SignIn = ({navigation}: SignInTypes) => {
         </Animated.View>
         <View style={styles.container}>
           <Animated.View style={[styles.animatedContainer, {opacity: fadeAnim}]}>
-            <LoginButton onPress={() => navigation.navigate('Dashboard')}/>
+            <LoginButton
+              image={Assets.main.googleIcon}
+              onPress={() => navigation.navigate('Dashboard')}
+              label="Google"
+            />
             <LoginButton
               image={Assets.main.facebookIcon}
+              label="Facebook"
             />
           </Animated.View>
         </View>

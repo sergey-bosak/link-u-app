@@ -8,6 +8,7 @@ Colors.loadColors({
 export const MainAssets = {
   googleIcon: require('../../assets/googleIcon.png'),
   facebookIcon: require('../../assets/facebookIcon.png'),
+  editIcon: require('../../assets/editIcon.png'),
 };
 
 Assets.loadAssetsGroup('main', MainAssets);

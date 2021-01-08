@@ -42,7 +42,7 @@ const LoginButton = ({onPress, image, label, backgroundColor}: LoginButtonTypes)
           source={image}
           marginL-12
         />
-        <Text marginR-12 style={{fontFamily: 'Lato'}} text40 textAlign={'center'}>{label}</Text>
+        <Text marginL-15 marginR-12 style={{fontFamily: 'Lato'}} text40 textAlign={'center'}>{label}</Text>
       </TouchableOpacity>
     </View>
   );
