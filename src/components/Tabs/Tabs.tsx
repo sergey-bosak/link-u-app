@@ -66,9 +66,9 @@ function Tabs({ data, scrollX, onItemPress }) {
       >
         {data.map((item, index) => {
           return (
-            <>
+            <View key={index}>
               <Tab data={data} key={item.key} item={item} ref={item.ref} onItemPress={() => onItemPress(index)} />
-            </>
+            </View>
           );
         })}
       </View>
