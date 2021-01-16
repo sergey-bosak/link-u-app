@@ -1,32 +1,40 @@
-import React, {ReactElement} from 'react';
-import {View} from 'react-native-ui-lib';
-import {StyleSheet} from 'react-native';
-import {LinearGradient} from "expo-linear-gradient";
+import React, { ReactElement } from 'react';
+import { View } from 'react-native-ui-lib';
+import { Dimensions, StyleSheet } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+
+const { width, height } = Dimensions.get('screen');
 
 type BackgroundTypes = {
   children: ReactElement;
+  gradient?: string[];
 };
 
-const Background = ({children}: BackgroundTypes) => {
+function Background({ children, gradient }: BackgroundTypes) {
   return (
-    <>
+    <View style={styles.container}>
       <LinearGradient
-        colors={['#8AD4FF', '#fff']}
+        colors={gradient}
         start={[0, 1.3]}
         end={[0, 0]}
         style={styles.gradient}
       />
-      <View style={styles.fullSize}>
-        {children}
-      </View>
-    </>
+      <View style={styles.fullSize}>{children}</View>
+    </View>
   );
 }
 
+Background.defaultProps = {
+  gradient: ['#8AD4FF', '#fff'],
+};
+
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   fullSize: {
-    width: '100%',
-    height: '100%',
+    width,
+    height,
   },
   gradient: {
     position: 'absolute',

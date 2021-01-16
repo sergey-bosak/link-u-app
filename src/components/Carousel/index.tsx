@@ -1,11 +1,19 @@
 import * as React from 'react';
-import { FlatList, Image, Animated, Text, View, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  Image,
+  Animated,
+  Text,
+  View,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-const { width, height } = Dimensions.get('screen');
+const { width } = Dimensions.get('screen');
 import { AntDesign } from '@expo/vector-icons';
 import faker from 'faker';
+
 import { StatusBar } from 'expo-status-bar';
-import {useState} from "react";
 
 const IMAGE_WIDTH = width * 0.65;
 const IMAGE_HEIGHT = IMAGE_WIDTH * 0.7;
@@ -38,77 +46,45 @@ const DATA = [...Array(images.length).keys()].map((_, i) => {
     price: faker.finance.amount(80, 200, 0),
   };
 });
-const SPACING = 20;
 
-const Content = ({ item }) => {
-  return (
-    <>
-      <Text
-        style={{
-          textAlign: 'center',
-          fontWeight: '800',
-          fontSize: 16,
-          textTransform: 'uppercase',
-        }}
-        numberOfLines={1}
-        adjustsFontSizeToFit
-      >
-        {item.title}
-      </Text>
-      <Text style={{ fontSize: 12, opacity: 0.4 }}>{item.subtitle}</Text>
-      <View style={{ flexDirection: 'row', marginTop: SPACING }}>
-        <Text
-          style={{
-            fontSize: 42,
-            letterSpacing: 3,
-            fontWeight: '900',
-            marginRight: 8,
-          }}
-        >
-          {item.price}
-        </Text>
-        <Text
-          style={{
-            fontSize: 16,
-            lineHeight: 36,
-            fontWeight: '800',
-            alignSelf: 'flex-end',
-          }}
-        >
-          USD
-        </Text>
-      </View>
-    </>
-  );
-};
+const SPACING = 20;
 
 function Carousel() {
   const scrollX = React.useRef(new Animated.Value(0)).current;
-  const progress = Animated.modulo(Animated.divide(scrollX, width), width);
-  const [index, setIndex] = useState(0);
-  const ref: any = React.useRef();
+  const rotation = Animated.modulo(
+    Animated.modulo(Animated.divide(scrollX, width), width),
+    -1
+  );
+  const ref: React.Ref<any> = React.useRef();
+  const [index, setIndex] = React.useState(0);
 
   return (
-    <View style={{ backgroundColor: '#A5F1FA', flex: 1 }}>
-      <StatusBar hidden />
-      <SafeAreaView style={{ marginTop: SPACING * 4 }}>
+    <View>
+      <SafeAreaView>
         <View style={{ height: IMAGE_HEIGHT * 2.1 }}>
           <Animated.FlatList
             ref={ref}
+            scrollEnabled={false}
             data={DATA}
             keyExtractor={(item) => item.key}
             horizontal
             pagingEnabled
-            onMomentumScrollEnd={(ev) => {
-              setIndex(Math.floor(ev.nativeEvent.contentOffset.x / width));
-            }}
-            onScroll={Animated.event(
-              [{nativeEvent: {contentOffset: {x: scrollX}}}], { useNativeDriver: true }
-            )}
             bounces={false}
             style={{ flexGrow: 0, zIndex: 9999 }}
-            contentContainerStyle={{ height: IMAGE_HEIGHT + SPACING * 2, paddingHorizontal: SPACING * 2 }}
+            contentContainerStyle={{
+              height: IMAGE_HEIGHT + SPACING * 2,
+              paddingHorizontal: SPACING * 2,
+            }}
             showsHorizontalScrollIndicator={false}
+            onMomentumScrollEnd={(ev) => {
+              setIndex(Math.round(ev.nativeEvent.contentOffset.x / width));
+            }}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+              {
+                useNativeDriver: true,
+              }
+            )}
             renderItem={({ item, index }) => {
               const inputRange = [
                 (index - 1) * width,
@@ -120,24 +96,30 @@ function Carousel() {
                 inputRange,
                 outputRange: [0, 1, 0],
               });
-
               const translateY = scrollX.interpolate({
                 inputRange,
                 outputRange: [50, 0, 20],
               });
-
               return (
                 <Animated.View
                   style={{
                     width,
-                    paddingVertical: SPACING,
                     opacity,
-                    transform: [{ translateY }],
+                    paddingVertical: SPACING,
+                    transform: [
+                      {
+                        translateY,
+                      },
+                    ],
                   }}
                 >
                   <Image
                     source={{ uri: item.image }}
-                    style={{ width: IMAGE_WIDTH, height: IMAGE_HEIGHT, resizeMode: 'cover' }}
+                    style={{
+                      width: IMAGE_WIDTH,
+                      height: IMAGE_HEIGHT,
+                      resizeMode: 'cover',
+                    }}
                   />
                 </Animated.View>
               );
@@ -148,45 +130,88 @@ function Carousel() {
               width: IMAGE_WIDTH,
               alignItems: 'center',
               paddingHorizontal: SPACING * 2,
-              marginLeft: SPACING * 2,
-              zIndex: 9999,
+              zIndex: 99,
+              backfaceVisibility: true,
             }}
           >
             {DATA.map((item, index) => {
               const inputRange = [
-                (index - .2) * width,
+                (index - 0.2) * width,
                 index * width,
-                (index + .2) * width,
+                (index + 0.2) * width,
               ];
-
               const opacity = scrollX.interpolate({
                 inputRange,
                 outputRange: [0, 1, 0],
               });
 
-              const rotateY = scrollX.interpolate({
+              const scale = scrollX.interpolate({
                 inputRange,
-                outputRange: ['45deg', '0deg', '45deg'],
-              })
+                outputRange: [1.1, 1, 1.1],
+              });
 
+              const rotateY = rotation.interpolate({
+                inputRange: [0, 0.5, 1],
+                outputRange: ['0deg', '180deg', '360deg'],
+              });
               return (
                 <Animated.View
-                  style={{
-                    position: 'absolute',
-                    opacity,
-                    transform: [{
-                      perspective: IMAGE_WIDTH * 4
-                    }, {
-                      rotateY
-                    }]
-                  }}
                   key={item.key}
+                  style={{
+                    opacity,
+                    position: 'absolute',
+                    alignItems: 'center',
+                    left: SPACING * 2,
+                    width: IMAGE_WIDTH,
+                    transform: [
+                      { perspective: IMAGE_WIDTH * 4 },
+                      { scale },
+                      { rotateY },
+                    ],
+                  }}
                 >
-                  <Content item={item} />
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontWeight: '800',
+                      fontSize: 16,
+                      textTransform: 'uppercase',
+                    }}
+                    numberOfLines={1}
+                    adjustsFontSizeToFit
+                  >
+                    {item.title}
+                  </Text>
+                  <Text style={{ fontSize: 12, opacity: 0.4 }}>
+                    {item.subtitle}
+                  </Text>
+                  <View style={{ flexDirection: 'row', marginTop: SPACING }}>
+                    <Text
+                      style={{
+                        fontSize: 42,
+                        letterSpacing: 3,
+                        fontWeight: '900',
+                        marginRight: 8,
+                      }}
+                    >
+                      {item.price}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        lineHeight: 36,
+                        fontWeight: '800',
+                        alignSelf: 'flex-end',
+                      }}
+                    >
+                      USD
+                    </Text>
+                  </View>
                 </Animated.View>
               );
             })}
           </View>
+          <StatusBar hidden />
           <Animated.View
             style={{
               width: IMAGE_WIDTH + SPACING * 2,
@@ -198,20 +223,21 @@ function Carousel() {
               left: SPACING,
               bottom: 0,
               shadowColor: '#000',
-              shadowOpacity: 0.2,
+              shadowOpacity: 0.4,
               shadowRadius: 24,
               shadowOffset: {
                 width: 0,
                 height: 0,
               },
-              transform: [{
-                perspective: IMAGE_WIDTH * 4
-              }, {
-                rotateY: progress.interpolate({
-                  inputRange: [0, .5, 1],
-                  outputRange: ['0deg', '90deg', '180deg'],
-                })
-              }]
+              transform: [
+                { perspective: IMAGE_WIDTH * 4 },
+                {
+                  rotateY: rotation.interpolate({
+                    inputRange: [0, 0.5, 1],
+                    outputRange: ['0deg', '90deg', '180deg'],
+                  }),
+                },
+              ],
             }}
           />
         </View>
@@ -226,36 +252,30 @@ function Carousel() {
         >
           <TouchableOpacity
             disabled={index === 0}
-            style={{
-              opacity: index === 0 ? 0.2 : 1,
-            }}
             onPress={() => {
               ref?.current?.scrollToOffset({
                 offset: (index - 1) * width,
-                animated: true,
-              })
+              });
             }}
+            style={{ opacity: index === 0 ? 0.2 : 1 }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <AntDesign name='swapleft' size={42} color='black' />
+              <AntDesign name="swapleft" size={42} color="black" />
               <Text style={{ fontSize: 12, fontWeight: '800' }}>PREV</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
             disabled={index === DATA.length - 1}
-            style={{
-              opacity: index === DATA.length - 1 ? 0.2 : 1,
-            }}
             onPress={() => {
               ref?.current?.scrollToOffset({
                 offset: (index + 1) * width,
-                animated: true,
-              })
+              });
             }}
+            style={{ opacity: index === DATA.length - 1 ? 0.2 : 1 }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={{ fontSize: 12, fontWeight: '800' }}>NEXT</Text>
-              <AntDesign name='swapright' size={42} color='black' />
+              <AntDesign name="swapright" size={42} color="black" />
             </View>
           </TouchableOpacity>
         </View>
