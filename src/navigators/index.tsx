@@ -1,9 +1,9 @@
 import React from 'react';
 import SignIn from '../screens/SignIn';
-import Dashboard from "../screens/Dashboard";
-import {createStackNavigator} from "@react-navigation/stack";
-import {NavigationContainer} from "@react-navigation/native";
-import DashboardNavigator from "./Dashboard";
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import DashboardNavigator from './Dashboard';
+import Store from '../screens/Store';
 
 const Stack = createStackNavigator();
 
@@ -16,11 +16,16 @@ const RootNavigator = () => {
           gestureEnabled: false,
         }}
       >
-        <Stack.Screen name="SignIn" component={SignIn}/>
-        <Stack.Screen name="Dashboard" component={DashboardNavigator}/>
+        <Stack.Screen name="SignIn" component={SignIn} />
+        <Stack.Screen name="Dashboard" component={DashboardNavigator} />
+        <Stack.Screen
+          name="Store"
+          component={Store}
+          options={{ gestureEnabled: true }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
 
 export default RootNavigator;

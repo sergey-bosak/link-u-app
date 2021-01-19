@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Animated, StyleSheet } from 'react-native';
-import { View, Text, Assets } from 'react-native-ui-lib';
+import {
+  ActivityIndicator,
+  Animated,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
+import { View, Assets } from 'react-native-ui-lib';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 import BaseScreen from '../../components/BaseScreen';
 import LoginButton from '../../components/LoginButton';
 import { useFonts } from 'expo-font';
 import Title from '../../components/Title';
+
+const { height } = Dimensions.get('screen');
 
 type SignInTypes = {
   navigation: NavigationScreenProp<NavigationState>;
@@ -58,7 +65,7 @@ const styles = StyleSheet.create({
     height: '92%',
   },
   animatedContainer: {
-    height: '22%',
+    height: height / 4,
     justifyContent: 'space-around',
   },
 });

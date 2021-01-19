@@ -1,14 +1,24 @@
-import {PixelRatio} from 'react-native';
-import {Colors, Assets} from 'react-native-ui-lib';
+import { PixelRatio } from 'react-native';
+import { Colors, Assets } from 'react-native-ui-lib';
 
 Colors.loadColors({
-  mainOrange: '#d49d06'
+  mainOrange: '#d49d06',
 });
 
 export const MainAssets = {
   googleIcon: require('../../assets/googleIcon.png'),
   facebookIcon: require('../../assets/facebookIcon.png'),
   editIcon: require('../../assets/editIcon.png'),
+  basketIcon: require('../../assets/basket-icon.png'),
+  chevronIcon: require('../../assets/chevron-right.png'),
+  returnIcon: require('../../assets/return-icon.png'),
+  dogBackground: require('../../assets/dog-bg.jpg'),
+  houseBackground: require('../../assets/house-bg.jpg'),
+  manBackground: require('../../assets/man-bg.jpg'),
+  womanBackground: require('../../assets/woman-bg.jpg'),
+  kidBackground: require('../../assets/kid-bg.jpg'),
+  dogChain: require('../../assets/dog-chain.jpg'),
+  dogChain1: require('../../assets/dog-chain1.jpg'),
 };
 
 Assets.loadAssetsGroup('main', MainAssets);

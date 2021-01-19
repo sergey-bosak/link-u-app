@@ -61,7 +61,7 @@ function Carousel() {
   return (
     <View>
       <SafeAreaView>
-        <View style={{ height: IMAGE_HEIGHT * 2.1 }}>
+        <View style={{ height: IMAGE_HEIGHT * 1.9, margin: IMAGE_HEIGHT / 24 }}>
           <Animated.FlatList
             ref={ref}
             scrollEnabled={false}
