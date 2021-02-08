@@ -10,6 +10,7 @@ import Tabs from './Tabs';
 import { Assets } from 'react-native-ui-lib';
 import ShopItem from '../ShopItem';
 import { petsItems } from './content';
+import PlusMinusIcon from '../PlusMinusIcon';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -40,7 +41,7 @@ const data = Object.keys(images).map((i) => ({
   categoriesItems: shopItems[i],
 }));
 
-function AnimatedTabs({ goBack }) {
+function AnimatedTabs({ goBack, navigate }) {
   const scrollX = useRef(new Animated.Value(0)).current;
   const ref: any = useRef();
   const onItemPress = useCallback((itemIndex) => {
@@ -58,6 +59,7 @@ function AnimatedTabs({ goBack }) {
         showsHorizontalScrollIndicator={false}
         pagingEnabled
         horizontal
+        scrollEnabled={false}
         bounces={false}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { x: scrollX } } }],
@@ -76,6 +78,7 @@ function AnimatedTabs({ goBack }) {
         scrollX={scrollX}
         data={data}
         goBack={goBack}
+        navigate={navigate}
       />
     </View>
   );

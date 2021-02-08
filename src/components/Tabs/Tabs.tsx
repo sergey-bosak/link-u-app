@@ -5,12 +5,11 @@ import {
   Text,
   Animated,
   TouchableOpacity,
-  Image,
   StyleSheet,
 } from 'react-native';
 import { PX } from '../../theme';
-import { Assets } from 'react-native-ui-lib';
 import CartIcon from '../CartIcon';
+import BackButton from '../BackButton';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -64,7 +63,7 @@ const Indicator = ({ measures, scrollX, data }) => {
   );
 };
 
-function Tabs({ data, scrollX, onItemPress, goBack }) {
+function Tabs({ data, scrollX, onItemPress, goBack, navigate }) {
   const [measures, setMeasures]: any = useState([]);
   const containerRef = useRef();
   useEffect(() => {
@@ -91,10 +90,8 @@ function Tabs({ data, scrollX, onItemPress, goBack }) {
   return (
     <View style={styles.container}>
       <View style={styles.topIconsContainer}>
-        <TouchableOpacity style={styles.iconContainer} onPress={goBack}>
-          <Image style={styles.icon} source={Assets.main.returnIcon} />
-        </TouchableOpacity>
-        <CartIcon onPress={() => {}} count={12} />
+        <BackButton goBack={goBack} />
+        <CartIcon onPress={navigate} count={12} />
       </View>
       <View
         ref={containerRef}
@@ -131,20 +128,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: height / 16,
   },
-  iconContainer: {
-    width: 185 * PX,
-    height: 185 * PX,
-    marginBottom: 100 * PX,
-  },
-  icon: {
-    width: '100%',
-    height: '100%',
-  },
   topIconsContainer: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 130 * PX,
+    marginBottom: 100 * PX,
   },
 });
 

@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import DashboardNavigator from './Dashboard';
 import Store from '../screens/Store';
+import Cart from '../screens/Cart';
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,11 @@ const RootNavigator = () => {
         <Stack.Screen
           name="Store"
           component={Store}
+          options={{ gestureEnabled: true }}
+        />
+        <Stack.Screen
+          name="Cart"
+          component={Cart}
           options={{ gestureEnabled: true }}
         />
       </Stack.Navigator>
