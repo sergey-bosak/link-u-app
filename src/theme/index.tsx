@@ -19,6 +19,7 @@ export const MainAssets = {
   kidBackground: require('../../assets/kid-bg.jpg'),
   dogChain: require('../../assets/dog-chain.jpg'),
   dogChain1: require('../../assets/dog-chain1.jpg'),
+  closeIcon: require('../../assets/close-icon.png'),
 };
 
 Assets.loadAssetsGroup('main', MainAssets);
