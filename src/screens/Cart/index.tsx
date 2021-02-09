@@ -29,13 +29,16 @@ function Cart({ navigation }) {
           <BackButton goBack={() => navigation.goBack()} />
         </View>
         <Text style={styles.title}>Cart</Text>
-        <ScrollView style={styles.itemsContainer}>
+        <ScrollView
+          contentContainerStyle={{ alignItems: 'center' }}
+          style={styles.itemsContainer}
+        >
           {items.map((item) => (
             <View>
               <View style={styles.imageContainer}>
                 <Image style={styles.image} source={item.image} />
               </View>
-              <Text>{item.label}</Text>
+              <Text style={styles.itemLabel}>{item.label}</Text>
             </View>
           ))}
         </ScrollView>
@@ -53,8 +56,9 @@ const styles = StyleSheet.create({
     marginBottom: 30 * PX,
   },
   imageContainer: {
-    width: 300 * PX,
-    height: 300 * PX,
+    width: 600 * PX,
+    height: 600 * PX,
+    marginVertical: 200 * PX,
   },
   title: {
     fontFamily: 'Lato',
@@ -67,12 +71,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     height: height / 1.3,
     marginTop: 60 * PX,
+    display: 'flex',
   },
   image: {
     flex: 1,
     width: undefined,
     height: undefined,
     resizeMode: 'contain',
+  },
+  itemLabel: {
+    textAlign: 'center',
   },
 });
 
